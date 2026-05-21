@@ -2,11 +2,82 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS2 Skin Price Tracker</title>
     <link rel="stylesheet" href="style.css">
     <script defer src="scripts/script.js"></script>
+    <script src="../server.js" defer></script>
 </head>
 <body>
+    <main class="app-shell">
+        <section class="workspace" aria-labelledby="page-title">
+            <header class="topbar">
+                <div>
+                    <p class="eyebrow">Static marketplace monitor</p>
+                    <h1 id="page-title">CS2 Skin Price Tracker</h1>
+                </div>
+                <div class="freshness" aria-live="polite">
+                    <span class="freshness__label">Last updated</span>
+                    <strong id="lastUpdated">Loading...</strong>
+                </div>
+            </header>
 
+            <section class="control-panel" aria-label="Tracker controls">
+                <label class="search-field" for="skinSearch">
+                    <span class="search-field__icon" aria-hidden="true"></span>
+                    <input id="skinSearch" type="search" placeholder="Search skin, weapon, rarity..." autocomplete="off">
+                </label>
+
+                <div class="segmented" role="group" aria-label="Comparison mode">
+                    <button class="segmented__button is-active" type="button" data-mode="buy" aria-pressed="true">Buy low</button>
+                    <button class="segmented__button" type="button" data-mode="sell" aria-pressed="false">Sell high</button>
+                </div>
+
+                <label class="select-field" for="sortSelect">
+                    <span>Sort</span>
+                    <select id="sortSelect">
+                        <option value="spread">Biggest spread</option>
+                        <option value="best">Best price</option>
+                        <option value="name">Name</option>
+                        <option value="fresh">Freshest</option>
+                    </select>
+                </label>
+            </section>
+
+            <section class="market-strip" id="marketFilters" aria-label="Marketplace filters"></section>
+
+            <section class="stats-grid" aria-label="Market summary">
+                <article class="stat-card">
+                    <span>Matches</span>
+                    <strong id="matchCount">0</strong>
+                </article>
+                <article class="stat-card">
+                    <span>Best opportunity</span>
+                    <strong id="bestOpportunity">-</strong>
+                </article>
+                <article class="stat-card">
+                    <span>Active markets</span>
+                    <strong id="activeMarkets">0</strong>
+                </article>
+                <article class="stat-card">
+                    <span>Freshest quote</span>
+                    <strong id="freshestQuote">-</strong>
+                </article>
+            </section>
+
+            <section class="table-shell" aria-label="Price comparison table">
+                <div class="table-scroll">
+                    <table>
+                        <thead id="priceHead"></thead>
+                        <tbody id="priceBody"></tbody>
+                    </table>
+                </div>
+                <div class="empty-state" id="emptyState" hidden>
+                    <strong>No skins found</strong>
+                    <span>Try another search or enable more marketplaces.</span>
+                </div>
+            </section>
+        </section>
+    </main>
 </body>
 </html>
