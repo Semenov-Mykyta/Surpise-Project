@@ -1,4 +1,3 @@
-// EmailJS config – замените на свои значения
 const EMAILJS_PUBLIC_KEY = "zWpLd3YXblspaCcRc";
 const EMAILJS_SERVICE_ID = "service_knm5jpr";
 const EMAILJS_TEMPLATE_ID = "template_t7dqfdg";
