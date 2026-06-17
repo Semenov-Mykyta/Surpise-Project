@@ -1,13 +1,13 @@
-
-const SUPABASE_URL = "https:
+// Supabase config – замените на свои значения
+const SUPABASE_URL = "https://vpznvbxgklqovibmoheq.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZwem52Ynhna2xxb3ZpYm1vaGVxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxNDAyNTMsImV4cCI6MjA5NTcxNjI1M30.FgCN1knqpyi-2bb9U8tvSqC1mpGT15IyMyrM7BGJQRY";
 
-let supabaseClient;
+window.window.supabaseClient = null;
 
 document.addEventListener("DOMContentLoaded", async () => {
     if (typeof supabase === "undefined") return;
 
-    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    window.supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     const loginForm = document.getElementById("login-form");
     const registerForm = document.getElementById("register-form");
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     async function refreshSessionUI() {
-        const { data } = await supabaseClient.auth.getUser();
+        const { data } = await window.supabaseClient.auth.getUser();
         const user = data?.user;
         if (user && dashboard) {
             dashboard.hidden = false;
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const email = document.getElementById("login-email").value.trim();
             const password = document.getElementById("login-password").value;
 
-            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            const { error } = await window.supabaseClient.auth.signInWithPassword({ email, password });
 
             if (error) {
                 loginStatus.textContent = error.message;
@@ -71,7 +71,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const email = document.getElementById("register-email").value.trim();
             const password = document.getElementById("register-password").value;
 
-            const { error } = await supabaseClient.auth.signUp({
+            const { error } = await window.supabaseClient.auth.signUp({
                 email,
                 password,
                 options: {
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 return;
             }
 
-            const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+            const { error } = await window.supabaseClient.auth.resetPasswordForEmail(email, {
                 redirectTo: window.location.origin + "/login.html"
             });
 
@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     if (logoutBtn) {
         logoutBtn.addEventListener("click", async () => {
-            await supabaseClient.auth.signOut();
+            await window.supabaseClient.auth.signOut();
             await refreshSessionUI();
         });
     }
