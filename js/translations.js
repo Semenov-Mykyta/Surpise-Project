@@ -1,3 +1,7 @@
+/**
+ * Website translations for all supported languages
+ */
+
 const translations = {
     en: {
         "nav.home": "Home",
@@ -234,10 +238,6 @@ const translations = {
 
         "cart.title": "Dein Warenkorb",
         "cart.total": "Summe",
-        "cart.checkout": "Zur Kasse",
-
-        "product.add_to_cart": "In den Warenkorb",
-        "product.related_title": "Das könnte dir auch gefallen",
         "product.reviews_title": "Produktbewertungen",
 
         "shop.title": "Alle Produkte",
@@ -284,37 +284,61 @@ const translations = {
     }
 };
 
+/**
+ * Current language saved in browser storage
+ */
+
 let currentLang = localStorage.getItem("lang") || "en";
 
+/**
+ * Applies translations to all elements on the page
+ */
+
 function applyTranslations() {
+    /* Get the dictionary for the current language, fall back to English if missing */
     const dict = translations[currentLang] || translations.en;
 
+    /* Set the text content of every element that has a data-i18n attribute */
     document.querySelectorAll("[data-i18n]").forEach((el) => {
         const key = el.getAttribute("data-i18n");
         if (dict[key]) el.textContent = dict[key];
     });
 
+    /* Set the placeholder text of inputs that have a data-i18n-placeholder attribute */
     document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
         const key = el.getAttribute("data-i18n-placeholder");
         if (dict[key]) el.setAttribute("placeholder", dict[key]);
     });
 
+    /* Update the language toggle button label in the navbar */
     const langLabel = document.getElementById("lang-label");
     if (langLabel) langLabel.textContent = currentLang.toUpperCase();
 }
 
+/**
+ * Changes website language and refreshes translated content
+ */
+
 function setLanguage(lang) {
     currentLang = lang;
+    /* Save the selected language to localStorage for future visits */
     localStorage.setItem("lang", lang);
     applyTranslations();
+    /* Re-render product listings if the relevant sections exist on the page */
     if (typeof renderShopProducts === "function" && document.getElementById("shop-products")) renderShopProducts();
     if (typeof renderFeaturedProducts === "function" && document.getElementById("featured-products")) renderFeaturedProducts();
     if (typeof initProductPage === "function" && document.querySelector(".product-layout")) initProductPage();
 }
 
+/**
+ * Initializes language system after page load
+ */
+
 document.addEventListener("DOMContentLoaded", () => {
+    /* Apply translations immediately when the page loads */
     applyTranslations();
 
+    /* Language toggle button switches between EN and DE */
     const langToggle = document.getElementById("lang-toggle");
     if (langToggle) {
         langToggle.addEventListener("click", () => {

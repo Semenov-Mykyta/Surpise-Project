@@ -1,29 +1,49 @@
 const THEME_KEY = "novastore_theme";
 
+/**
+ * Applies the selected theme and saves it in localStorage
+ */
+
 function applyTheme(theme) {
+    /* Only allow "light" or "dark", default to "dark" for any other value */
     const safeTheme = theme === "light" ? "light" : "dark";
     document.documentElement.setAttribute("data-theme", safeTheme);
     localStorage.setItem(THEME_KEY, safeTheme);
 
+    /* Update the theme icon on every element with the class "theme-icon" */
     document.querySelectorAll(".theme-icon").forEach((icon) => {
         icon.textContent = safeTheme === "light" ? "☀️" : "🌙";
     });
 }
 
+/**
+ * Loads saved theme or uses system preference
+ */
+
 function initTheme() {
     const stored = localStorage.getItem(THEME_KEY);
     if (stored === "light" || stored === "dark") {
+        /* Use the previously saved theme */
         applyTheme(stored);
     } else {
+        /* No saved preference — fall back to the OS color scheme */
         const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
         applyTheme(prefersDark ? "dark" : "light");
     }
 }
 
+/**
+ * Switches between dark and light theme
+ */
+
 function toggleTheme() {
     const current = document.documentElement.getAttribute("data-theme") || "dark";
     applyTheme(current === "dark" ? "light" : "dark");
 }
+
+/**
+ * Initializes navigation, cart sidebar and theme button
+ */
 
 function initHeader() {
     const burger = document.getElementById("burger");
@@ -33,22 +53,26 @@ function initHeader() {
     const cartSidebar = document.getElementById("cart-sidebar");
     const cartClose = document.getElementById("cart-close");
 
+    /* Burger button toggles the mobile navigation menu open/closed */
     if (burger && nav) {
         burger.addEventListener("click", () => {
             nav.classList.toggle("open");
         });
     }
 
+    /* Theme button calls toggleTheme on every click */
     if (themeToggle) {
         themeToggle.addEventListener("click", toggleTheme);
     }
 
+    /* Cart icon in the navbar opens the cart sidebar */
     if (cartToggle && cartSidebar) {
         cartToggle.addEventListener("click", () => {
             cartSidebar.classList.add("open");
         });
     }
 
+    /* Close button removes the "open" class to hide the cart sidebar */
     if (cartClose && cartSidebar) {
         cartClose.addEventListener("click", () => {
             cartSidebar.classList.remove("open");
@@ -56,26 +80,45 @@ function initHeader() {
     }
 }
 
+/**
+ * Hides page loader after page is fully loaded
+ */
+
 function initLoader() {
     const loader = document.getElementById("page-loader");
     if (!loader) return;
+    /* Wait for the "load" event (all resources ready), then hide the loader after a short delay */
     window.addEventListener("load", () => {
         setTimeout(() => loader.classList.add("hidden"), 400);
     });
 }
+
+/**
+ * Displays current year in footer
+ */
 
 function initYear() {
     const yearEl = document.getElementById("year");
     if (yearEl) yearEl.textContent = new Date().getFullYear();
 }
 
+/**
+ * Returns product description based on selected language
+ */
+
 function productDesc(p) {
     const lang = localStorage.getItem("lang") || "en";
+    /* Use German description if the language is "de" and one exists, otherwise use English */
     return (lang === "de" && p.description_de) ? p.description_de : p.description;
 }
 
+/**
+ * Shows temporary notification message
+ */
+
 function showToast(msg) {
     let toast = document.getElementById("nova-toast");
+    /* Create the toast element if it does not exist on the page yet */
     if (!toast) {
         toast = document.createElement("div");
         toast.id = "nova-toast";
@@ -84,19 +127,31 @@ function showToast(msg) {
     }
     toast.textContent = msg;
     toast.classList.add("show");
+    /* Clear any previous timer so the toast doesn't disappear too early */
     clearTimeout(toast._timer);
+    /* Auto-hide the toast after 2.2 seconds */
     toast._timer = setTimeout(() => toast.classList.remove("show"), 2200);
 }
 
+/**
+ * Creates visual star rating
+ */
+
 function starRating(rating) {
     const full = Math.round(rating);
+    /* Filled stars + empty stars, always totalling 5 */
     return "★".repeat(full) + "☆".repeat(5 - full);
 }
+
+/**
+ * Adds ripple click animation effect
+ */
 
 function initRipple() {
     document.body.addEventListener("click", (e) => {
         const target = e.target.closest(".ripple");
         if (!target) return;
+        /* Calculate click position relative to the element and set CSS variables for the animation */
         const rect = target.getBoundingClientRect();
         const size = Math.max(rect.width, rect.height);
         const x = e.clientX - rect.left - size / 2;
@@ -106,7 +161,10 @@ function initRipple() {
     });
 }
 
-/* Simple product data (could be replaced by Supabase later) */
+/**
+ * Product catalog used by the shop
+ * Can later be replaced by Supabase database
+ */
 
 const PRODUCTS = [
     {
@@ -231,6 +289,11 @@ const PRODUCTS = [
     }
 ];
 
+/**
+ * Renders products on the shop page
+ * Includes search, category filtering and sorting
+ */
+
 function renderShopProducts() {
     const container = document.getElementById("shop-products");
     if (!container) return;
@@ -239,28 +302,39 @@ function renderShopProducts() {
     const categoryFilter = document.getElementById("category-filter");
     const sortSelect = document.getElementById("sort-by");
 
+    /**
+     * Applies search, category and sorting filters, then re-renders the product list
+     */
+
     function applyFilters() {
         let list = [...PRODUCTS];
 
+        /* Filter by search query — compare against the product title */
         const query = (searchInput?.value || "").toLowerCase();
         if (query) {
             list = list.filter((p) => p.title.toLowerCase().includes(query));
         }
 
+        /* Filter by selected category, skip if "all" is selected */
         const category = categoryFilter?.value || "all";
         if (category !== "all") {
             list = list.filter((p) => p.category === category);
         }
 
+        /* Sort the filtered list by the chosen criterion */
         const sort = sortSelect?.value || "featured";
         if (sort === "price_asc") list.sort((a, b) => a.price - b.price);
         if (sort === "price_desc") list.sort((a, b) => b.price - a.price);
 
         container.innerHTML = "";
+
+        /* Show a "no results" message with a reset link if nothing was found */
         if (list.length === 0) {
             container.innerHTML = `<div class="empty-state"><p>No products found.</p><a href="shop.html" class="btn ghost">Clear search</a></div>`;
             return;
         }
+
+        /* Build a card element for each product in the filtered list */
         list.forEach((p) => {
             const stars = starRating(p.rating || 4);
             const card = document.createElement("article");
@@ -282,6 +356,7 @@ function renderShopProducts() {
           </div>
         </div>
       `;
+            /* Clicking the card (not the button) navigates to the product page */
             card.addEventListener("click", (e) => {
                 if (e.target.closest(".add-to-cart")) return;
                 window.location.href = `product.html?id=${p.id}`;
@@ -289,6 +364,7 @@ function renderShopProducts() {
             container.appendChild(card);
         });
 
+        /* Attach click handlers to every "Add to cart" button in the rendered list */
         container.querySelectorAll(".add-to-cart").forEach((btn) => {
             btn.addEventListener("click", (e) => {
                 e.stopPropagation();
@@ -301,6 +377,7 @@ function renderShopProducts() {
         });
     }
 
+    /* Re-run filters whenever the search input, category or sort selection changes */
     ["input", "change"].forEach((ev) => {
         searchInput?.addEventListener(ev, applyFilters);
         categoryFilter?.addEventListener(ev, applyFilters);
@@ -310,11 +387,17 @@ function renderShopProducts() {
     applyFilters();
 }
 
+/**
+ * Loads and displays single product page
+ */
+
 function initProductPage() {
+    /* Read the product ID from the URL query string, default to first product */
     const params = new URLSearchParams(window.location.search);
     const id = params.get("id") || "1";
     const product = PRODUCTS.find((p) => p.id === id) || PRODUCTS[0];
 
+    /* Get all DOM elements on the product page */
     const titleEl = document.getElementById("product-title");
     const priceEl = document.getElementById("product-price");
     const categoryEl = document.getElementById("product-category");
@@ -324,6 +407,7 @@ function initProductPage() {
     const qtyInput = document.getElementById("product-qty");
     const relatedContainer = document.getElementById("related-products");
 
+    /* Populate the main product details */
     if (titleEl) titleEl.textContent = product.title;
     if (priceEl) priceEl.textContent = `€${product.price}`;
     if (categoryEl) categoryEl.textContent = product.category.toUpperCase();
@@ -334,6 +418,7 @@ function initProductPage() {
     if (imgEl && product.image) { imgEl.src = product.image; imgEl.alt = product.title; }
     if (addBtn) addBtn.setAttribute("data-product-id", product.id);
 
+    /* Add the product to the cart with the selected quantity when button is clicked */
     if (addBtn && qtyInput) {
         addBtn.addEventListener("click", () => {
             const qty = Number(qtyInput.value) || 1;
@@ -341,16 +426,19 @@ function initProductPage() {
         });
     }
 
+    /* Minus button decreases the quantity input, minimum 1 */
     document.querySelector(".qty-minus")?.addEventListener("click", () => {
         const val = Math.max(1, Number(qtyInput.value) - 1);
         qtyInput.value = val;
     });
 
+    /* Plus button increases the quantity input */
     document.querySelector(".qty-plus")?.addEventListener("click", () => {
         const val = Math.max(1, Number(qtyInput.value) + 1);
         qtyInput.value = val;
     });
 
+    /* Render the "Related products" section (all products except current, first 3) */
     if (relatedContainer) {
         const related = PRODUCTS.filter((p) => p.id !== product.id).slice(0, 3);
         relatedContainer.innerHTML = "";
@@ -373,6 +461,7 @@ function initProductPage() {
           </div>
         </div>
       `;
+            /* Clicking a related card navigates to that product's page */
             card.addEventListener("click", (e) => {
                 if (e.target.closest(".add-to-cart")) return;
                 window.location.href = `product.html?id=${p.id}`;
@@ -380,6 +469,7 @@ function initProductPage() {
             relatedContainer.appendChild(card);
         });
 
+        /* Attach cart handlers to "Add to cart" buttons inside related products */
         relatedContainer.querySelectorAll(".add-to-cart").forEach((btn) => {
             btn.addEventListener("click", (e) => {
                 e.stopPropagation();
@@ -392,10 +482,15 @@ function initProductPage() {
     }
 }
 
+/**
+ * Displays featured products on homepage
+ */
+
 function renderFeaturedProducts() {
     const container = document.getElementById("featured-products");
     if (!container) return;
 
+    /* Hand-pick three specific products: headphones, charger, and power bank */
     const featured = [PRODUCTS[0], PRODUCTS[6], PRODUCTS[9]]; // headphones1, charger1, powerbank1
     featured.forEach((p) => {
         const card = document.createElement("article");
@@ -415,6 +510,7 @@ function renderFeaturedProducts() {
                 </div>
             </div>
         `;
+        /* Clicking the card (not the "View" button) also navigates to the product page */
         card.addEventListener("click", (e) => {
             if (e.target.closest(".btn")) return;
             window.location.href = `product.html?id=${p.id}`;
@@ -423,6 +519,10 @@ function renderFeaturedProducts() {
     });
 }
 
+/**
+ * Initializes all page components after DOM is loaded
+ */
+
 document.addEventListener("DOMContentLoaded", () => {
     initTheme();
     initHeader();
@@ -430,6 +530,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initYear();
     initRipple();
 
+    /* Only initialize components that exist on the current page */
     if (document.getElementById("featured-products")) {
         renderFeaturedProducts();
     }
