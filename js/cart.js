@@ -1,5 +1,33 @@
 const CART_KEY = "novastore_cart";
 
+async function getUserId(){
+    const { data } = await window.supabaseClient.auth.getUser();
+    return data?.user?.id;
+}
+
+async function loadCartFromServer(userId){
+    const { data } = await window.supabaseClient
+        .from('carts')
+        .select('items')
+        .eq('user_id', userId)
+        .single();
+    return data?.items || [];
+}
+
+async function saveCartToServer(userId, cart){
+    await window.supabaseClient
+        .from('carts')
+        .upsert({ user_id: userId, items: cart, updated_at: new Date() });
+}
+
+async function syncCart(){
+    const userId = await getUserId();
+    if(!userId) return;
+    const cart = getCart();
+    await saveCartToServer(userId, cart);
+}
+
+
 function getCart() {
     try {
         return JSON.parse(localStorage.getItem(CART_KEY)) || [];
@@ -10,6 +38,7 @@ function getCart() {
 
 function saveCart(cart) {
     localStorage.setItem(CART_KEY, JSON.stringify(cart));
+    syncCart();
     updateCartCount();
     renderCartSidebar();
 }

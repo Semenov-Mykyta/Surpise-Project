@@ -56,6 +56,7 @@ const translations = {
         "footer.privacy": "Privacy Policy",
         "footer.contact": "Contact",
 
+
         "legal.kicker": "Store policies",
         "legal.title": "Terms & Privacy, written clearly.",
         "legal.subtitle": "A simple overview of how NovaStore handles purchases, accounts, customer support, and personal information.",
@@ -196,6 +197,7 @@ const translations = {
         "footer.terms": "Nutzungsbedingungen",
         "footer.privacy": "Datenschutz",
         "footer.contact": "Kontakt",
+
 
         "legal.kicker": "Shop-Richtlinien",
         "legal.title": "Bedingungen & Datenschutz, klar erklärt.",
