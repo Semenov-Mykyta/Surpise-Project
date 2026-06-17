@@ -69,8 +69,6 @@ function initYear() {
     if (yearEl) yearEl.textContent = new Date().getFullYear();
 }
 
-<<<<<<< HEAD
-=======
 function productDesc(p) {
     const lang = localStorage.getItem("lang") || "en";
     return (lang === "de" && p.description_de) ? p.description_de : p.description;
@@ -95,7 +93,6 @@ function starRating(rating) {
     return "★".repeat(full) + "☆".repeat(5 - full);
 }
 
->>>>>>> af82f59e1d1ee97d863d74f215ccc1248d2e1e4c
 function initRipple() {
     document.body.addEventListener("click", (e) => {
         const target = e.target.closest(".ripple");
@@ -112,14 +109,6 @@ function initRipple() {
 /* Simple product data (could be replaced by Supabase later) */
 
 const PRODUCTS = [
-<<<<<<< HEAD
-    { id: "1", title: "Aurora Wireless Headphones", price: 199, category: "tech" },
-    { id: "2", title: "Nebula Smartwatch", price: 249, category: "tech" },
-    { id: "3", title: "Lumen Minimal Sneakers", price: 129, category: "fashion" },
-    { id: "4", title: "Orbit Leather Backpack", price: 179, category: "accessories" },
-    { id: "5", title: "Flux Performance Hoodie", price: 89, category: "fashion" },
-    { id: "6", title: "Pulse Fitness Band", price: 79, category: "tech" }
-=======
     {
         id: "1",
         title: "SoundWave Pro Headphones",
@@ -240,7 +229,6 @@ const PRODUCTS = [
         image: "assets/products/powerbank3.jpg",
         rating: 4
     }
->>>>>>> af82f59e1d1ee97d863d74f215ccc1248d2e1e4c
 ];
 
 function renderShopProducts() {
@@ -269,16 +257,6 @@ function renderShopProducts() {
         if (sort === "price_desc") list.sort((a, b) => b.price - a.price);
 
         container.innerHTML = "";
-<<<<<<< HEAD
-        list.forEach((p) => {
-            const card = document.createElement("article");
-            card.className = "product-card glass-card hover-lift";
-            card.innerHTML = `
-        <div class="product-image skeleton"></div>
-        <div class="product-body">
-          <h3 class="product-title">${p.title}</h3>
-          <p class="product-category">${p.category}</p>
-=======
         if (list.length === 0) {
             container.innerHTML = `<div class="empty-state"><p>No products found.</p><a href="shop.html" class="btn ghost">Clear search</a></div>`;
             return;
@@ -296,7 +274,6 @@ function renderShopProducts() {
           <p class="product-category">${p.category.toUpperCase()}</p>
           <p class="product-stars">${stars}</p>
           <p class="product-desc">${productDesc(p)}</p>
->>>>>>> af82f59e1d1ee97d863d74f215ccc1248d2e1e4c
           <div class="product-meta">
             <span class="product-price">€${p.price}</span>
             <button class="btn small primary add-to-cart" data-id="${p.id}" data-title="${p.title}" data-price="${p.price}">
@@ -319,10 +296,7 @@ function renderShopProducts() {
                 const title = btn.getAttribute("data-title");
                 const price = Number(btn.getAttribute("data-price"));
                 addToCart({ id, title, price, qty: 1 });
-<<<<<<< HEAD
-=======
                 showToast(`✓ ${title} added to cart`);
->>>>>>> af82f59e1d1ee97d863d74f215ccc1248d2e1e4c
             });
         });
     }
@@ -342,29 +316,22 @@ function initProductPage() {
     const product = PRODUCTS.find((p) => p.id === id) || PRODUCTS[0];
 
     const titleEl = document.getElementById("product-title");
-<<<<<<< HEAD
-    const priceEl = document.querySelector(".product-price-large");
-=======
     const priceEl = document.getElementById("product-price");
     const categoryEl = document.getElementById("product-category");
     const descEl = document.getElementById("product-description");
     const imgEl = document.getElementById("product-main-img");
->>>>>>> af82f59e1d1ee97d863d74f215ccc1248d2e1e4c
     const addBtn = document.getElementById("product-add-to-cart");
     const qtyInput = document.getElementById("product-qty");
     const relatedContainer = document.getElementById("related-products");
 
     if (titleEl) titleEl.textContent = product.title;
     if (priceEl) priceEl.textContent = `€${product.price}`;
-<<<<<<< HEAD
-=======
     if (categoryEl) categoryEl.textContent = product.category.toUpperCase();
     if (descEl) descEl.textContent = productDesc(product);
 
     const starsEl = document.getElementById("product-stars");
     if (starsEl) starsEl.textContent = starRating(product.rating || 4);
     if (imgEl && product.image) { imgEl.src = product.image; imgEl.alt = product.title; }
->>>>>>> af82f59e1d1ee97d863d74f215ccc1248d2e1e4c
     if (addBtn) addBtn.setAttribute("data-product-id", product.id);
 
     if (addBtn && qtyInput) {
@@ -391,12 +358,6 @@ function initProductPage() {
             const card = document.createElement("article");
             card.className = "product-card glass-card hover-lift";
             card.innerHTML = `
-<<<<<<< HEAD
-        <div class="product-image skeleton"></div>
-        <div class="product-body">
-          <h3 class="product-title">${p.title}</h3>
-          <p class="product-category">${p.category}</p>
-=======
         <div class="product-image">
           <img src="${p.image}" alt="${p.title}" loading="lazy" />
         </div>
@@ -404,7 +365,6 @@ function initProductPage() {
           <h3 class="product-title">${p.title}</h3>
           <p class="product-category">${p.category}</p>
           <p class="product-desc">${productDesc(p)}</p>
->>>>>>> af82f59e1d1ee97d863d74f215ccc1248d2e1e4c
           <div class="product-meta">
             <span class="product-price">€${p.price}</span>
             <button class="btn small primary add-to-cart" data-id="${p.id}" data-title="${p.title}" data-price="${p.price}">
@@ -432,8 +392,6 @@ function initProductPage() {
     }
 }
 
-<<<<<<< HEAD
-=======
 function renderFeaturedProducts() {
     const container = document.getElementById("featured-products");
     if (!container) return;
@@ -465,7 +423,6 @@ function renderFeaturedProducts() {
     });
 }
 
->>>>>>> af82f59e1d1ee97d863d74f215ccc1248d2e1e4c
 document.addEventListener("DOMContentLoaded", () => {
     initTheme();
     initHeader();
@@ -473,13 +430,10 @@ document.addEventListener("DOMContentLoaded", () => {
     initYear();
     initRipple();
 
-<<<<<<< HEAD
-=======
     if (document.getElementById("featured-products")) {
         renderFeaturedProducts();
     }
 
->>>>>>> af82f59e1d1ee97d863d74f215ccc1248d2e1e4c
     if (document.getElementById("shop-products")) {
         renderShopProducts();
     }
