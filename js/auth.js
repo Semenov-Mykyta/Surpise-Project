@@ -8,6 +8,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+    window.supabaseClient = supabaseClient;
+    window.currentUser = null;
+    window.currentUserId = null;
+
     const loginForm = document.getElementById("login-form");
     const registerForm = document.getElementById("register-form");
     const loginStatus = document.getElementById("login-status");
@@ -16,13 +20,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     const logoutBtn = document.getElementById("logout-btn");
     const dashboard = document.getElementById("dashboard");
     const dashboardEmail = document.getElementById("dashboard-email");
+    const userIndicator = document.getElementById("user-indicator");
 
     document.querySelectorAll(".auth-tab").forEach((tab) => {
         tab.addEventListener("click", () => {
-            document.querySelectorAll(".auth-tab").forEach((t) => t.classList.remove("active"));
+            document.querySelectorAll(".auth-tab").forEach(t =>
+                t.classList.remove("active")
+            );
+
             tab.classList.add("active");
+
             const target = tab.getAttribute("data-auth-tab");
-            document.querySelectorAll(".auth-form").forEach((form) => {
+
+            document.querySelectorAll(".auth-form").forEach(form => {
                 form.classList.toggle("active", form.id.startsWith(target));
             });
         });
@@ -30,42 +40,54 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     async function refreshSessionUI() {
         const { data } = await supabaseClient.auth.getUser();
-        const user = data?.user;
-        if (user && dashboard) {
-            dashboard.hidden = false;
-            if (dashboardEmail) dashboardEmail.textContent = user.email;
-        } else if (dashboard) {
-            dashboard.hidden = true;
+        const user = data?.user || null;
+
+        window.currentUser = user;
+        window.currentUserId = user ? user.id : null;
+
+        if (dashboard) {
+            dashboard.hidden = !user;
         }
+
+        if (dashboardEmail) {
+            dashboardEmail.textContent = user ? user.email : "";
+        }
+
+        if (userIndicator) {
+            userIndicator.textContent = user ? user.email : "Login";
+        }
+
+        window.dispatchEvent(new Event("auth-change"));
     }
 
     if (loginForm) {
         loginForm.addEventListener("submit", async (e) => {
             e.preventDefault();
-            loginStatus.textContent = "";
-            loginStatus.className = "auth-status";
 
             const email = document.getElementById("login-email").value.trim();
             const password = document.getElementById("login-password").value;
 
-            const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            const { error } = await supabaseClient.auth.signInWithPassword({
+                email,
+                password
+            });
 
             if (error) {
                 loginStatus.textContent = error.message;
-                loginStatus.classList.add("error");
-            } else {
-                loginStatus.textContent = "Logged in successfully.";
-                loginStatus.classList.add("success");
-                await refreshSessionUI();
+                loginStatus.className = "auth-status error";
+                return;
             }
+
+            loginStatus.textContent = "Logged in successfully";
+            loginStatus.className = "auth-status success";
+
+            await refreshSessionUI();
         });
     }
 
     if (registerForm) {
         registerForm.addEventListener("submit", async (e) => {
             e.preventDefault();
-            registerStatus.textContent = "";
-            registerStatus.className = "auth-status";
 
             const email = document.getElementById("register-email").value.trim();
             const password = document.getElementById("register-password").value;
@@ -80,23 +102,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (error) {
                 registerStatus.textContent = error.message;
-                registerStatus.classList.add("error");
-            } else {
-                registerStatus.textContent = "Check your email to confirm your account.";
-                registerStatus.classList.add("success");
+                registerStatus.className = "auth-status error";
+                return;
             }
+
+            registerStatus.textContent = "Check your email to confirm account";
+            registerStatus.className = "auth-status success";
         });
     }
 
     if (forgotBtn) {
         forgotBtn.addEventListener("click", async () => {
-            loginStatus.textContent = "";
-            loginStatus.className = "auth-status";
-
             const email = document.getElementById("login-email").value.trim();
+
             if (!email) {
-                loginStatus.textContent = "Enter your email first.";
-                loginStatus.classList.add("error");
+                loginStatus.textContent = "Enter email first";
+                loginStatus.className = "auth-status error";
                 return;
             }
 
@@ -106,10 +127,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
             if (error) {
                 loginStatus.textContent = error.message;
-                loginStatus.classList.add("error");
+                loginStatus.className = "auth-status error";
             } else {
-                loginStatus.textContent = "Password reset email sent.";
-                loginStatus.classList.add("success");
+                loginStatus.textContent = "Reset email sent";
+                loginStatus.className = "auth-status success";
             }
         });
     }
@@ -121,5 +142,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
+    await supabaseClient.auth.getSession();
     await refreshSessionUI();
+
+    window.dispatchEvent(new Event("auth-ready"));
+
+    supabaseClient.auth.onAuthStateChange(async () => {
+        await refreshSessionUI();
+        window.dispatchEvent(new Event("auth-ready"));
+    });
 });
