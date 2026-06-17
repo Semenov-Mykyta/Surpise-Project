@@ -14,18 +14,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         SUPABASE_ANON_KEY
     );
 
-<<<<<<< Updated upstream
-=======
     /* Expose the Supabase client and user data globally so other scripts can access them */
->>>>>>> Stashed changes
     window.supabaseClient = supabaseClient;
     window.currentUser = null;
     window.currentUserId = null;
 
-<<<<<<< Updated upstream
-=======
     /* Get references to login/register forms and other UI elements */
->>>>>>> Stashed changes
     const loginForm = document.getElementById("login-form");
     const registerForm = document.getElementById("register-form");
 
@@ -42,33 +36,22 @@ document.addEventListener("DOMContentLoaded", async () => {
     /* Switch between Login and Register tabs by toggling the "active" class */
     document.querySelectorAll(".auth-tab").forEach((tab) => {
         tab.addEventListener("click", () => {
-<<<<<<< Updated upstream
-            document.querySelectorAll(".auth-tab").forEach(t =>
-                t.classList.remove("active")
-            );
-=======
 
             /* Remove active from all tabs, then set it on the clicked one */
             document
                 .querySelectorAll(".auth-tab")
                 .forEach(t => t.classList.remove("active"));
->>>>>>> Stashed changes
 
             tab.classList.add("active");
 
             const target = tab.getAttribute("data-auth-tab");
 
-<<<<<<< Updated upstream
-            document.querySelectorAll(".auth-form").forEach(form => {
-                form.classList.toggle("active", form.id.startsWith(target));
-=======
             /* Show only the form that matches the selected tab */
             document.querySelectorAll(".auth-form").forEach(form => {
                 form.classList.toggle(
                     "active",
                     form.id.startsWith(target)
                 );
->>>>>>> Stashed changes
             });
         });
     });
@@ -80,13 +63,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         /* Fetch the currently authenticated user from Supabase */
         const { data } = await supabaseClient.auth.getUser();
-<<<<<<< Updated upstream
-        const user = data?.user || null;
-
-        window.currentUser = user;
-        window.currentUserId = user ? user.id : null;
-
-=======
 
         const user = data?.user || null;
 
@@ -95,21 +71,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         window.currentUserId = user ? user.id : null;
 
         /* Show or hide the dashboard section depending on login state */
->>>>>>> Stashed changes
         if (dashboard) {
             dashboard.hidden = !user;
         }
 
-<<<<<<< Updated upstream
-        if (dashboardEmail) {
-            dashboardEmail.textContent = user ? user.email : "";
-        }
-
-        if (userIndicator) {
-            userIndicator.textContent = user ? user.email : "Login";
-        }
-
-=======
         /* Display the logged-in user's email inside the dashboard */
         if (dashboardEmail) {
             dashboardEmail.textContent = user
@@ -125,7 +90,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
 
         /* Notify other scripts (e.g. cart.js) that the auth state has changed */
->>>>>>> Stashed changes
         window.dispatchEvent(new Event("auth-change"));
     }
 
@@ -141,12 +105,6 @@ document.addEventListener("DOMContentLoaded", async () => {
                     .value
                     .trim();
 
-<<<<<<< Updated upstream
-            const { error } = await supabaseClient.auth.signInWithPassword({
-                email,
-                password
-            });
-=======
             const password =
                 document.getElementById("login-password")
                     .value;
@@ -157,98 +115,26 @@ document.addEventListener("DOMContentLoaded", async () => {
                     email,
                     password
                 });
->>>>>>> Stashed changes
 
             if (error) {
 
                 /* Display the error message returned by Supabase */
                 loginStatus.textContent = error.message;
                 loginStatus.className = "auth-status error";
-<<<<<<< Updated upstream
-                return;
-            }
-
-            loginStatus.textContent = "Logged in successfully";
-            loginStatus.className = "auth-status success";
-
-            await refreshSessionUI();
-        });
-    }
-
-    if (registerForm) {
-        registerForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-
-            const email = document.getElementById("register-email").value.trim();
-            const password = document.getElementById("register-password").value;
-
-            const { error } = await supabaseClient.auth.signUp({
-                email,
-                password,
-                options: {
-                    emailRedirectTo: window.location.origin + "/login.html"
-                }
-            });
-
-            if (error) {
-                registerStatus.textContent = error.message;
-                registerStatus.className = "auth-status error";
-                return;
-            }
-
-            registerStatus.textContent = "Check your email to confirm account";
-            registerStatus.className = "auth-status success";
-        });
-    }
-
-    if (forgotBtn) {
-        forgotBtn.addEventListener("click", async () => {
-            const email = document.getElementById("login-email").value.trim();
-
-            if (!email) {
-                loginStatus.textContent = "Enter email first";
-                loginStatus.className = "auth-status error";
-=======
-
->>>>>>> Stashed changes
                 return;
             }
 
             loginStatus.textContent =
                 "Logged in successfully";
 
-<<<<<<< Updated upstream
-            if (error) {
-                loginStatus.textContent = error.message;
-                loginStatus.className = "auth-status error";
-            } else {
-                loginStatus.textContent = "Reset email sent";
-                loginStatus.className = "auth-status success";
-            }
-        });
-    }
-=======
             loginStatus.className =
                 "auth-status success";
->>>>>>> Stashed changes
 
             /* Refresh the UI to reflect the new logged-in state */
             await refreshSessionUI();
         });
     }
 
-<<<<<<< Updated upstream
-    await supabaseClient.auth.getSession();
-    await refreshSessionUI();
-
-    window.dispatchEvent(new Event("auth-ready"));
-
-    supabaseClient.auth.onAuthStateChange(async () => {
-        await refreshSessionUI();
-        window.dispatchEvent(new Event("auth-ready"));
-    });
-});
-=======
     /* Handle register form submission */
     if (registerForm) {
 
@@ -380,4 +266,3 @@ document.addEventListener("DOMContentLoaded", async () => {
         );
     });
 });
->>>>>>> Stashed changes
