@@ -69,6 +69,33 @@ function initYear() {
     if (yearEl) yearEl.textContent = new Date().getFullYear();
 }
 
+<<<<<<< HEAD
+=======
+function productDesc(p) {
+    const lang = localStorage.getItem("lang") || "en";
+    return (lang === "de" && p.description_de) ? p.description_de : p.description;
+}
+
+function showToast(msg) {
+    let toast = document.getElementById("nova-toast");
+    if (!toast) {
+        toast = document.createElement("div");
+        toast.id = "nova-toast";
+        toast.className = "toast";
+        document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.classList.add("show");
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(() => toast.classList.remove("show"), 2200);
+}
+
+function starRating(rating) {
+    const full = Math.round(rating);
+    return "★".repeat(full) + "☆".repeat(5 - full);
+}
+
+>>>>>>> af82f59e1d1ee97d863d74f215ccc1248d2e1e4c
 function initRipple() {
     document.body.addEventListener("click", (e) => {
         const target = e.target.closest(".ripple");
@@ -85,12 +112,135 @@ function initRipple() {
 /* Simple product data (could be replaced by Supabase later) */
 
 const PRODUCTS = [
+<<<<<<< HEAD
     { id: "1", title: "Aurora Wireless Headphones", price: 199, category: "tech" },
     { id: "2", title: "Nebula Smartwatch", price: 249, category: "tech" },
     { id: "3", title: "Lumen Minimal Sneakers", price: 129, category: "fashion" },
     { id: "4", title: "Orbit Leather Backpack", price: 179, category: "accessories" },
     { id: "5", title: "Flux Performance Hoodie", price: 89, category: "fashion" },
     { id: "6", title: "Pulse Fitness Band", price: 79, category: "tech" }
+=======
+    {
+        id: "1",
+        title: "SoundWave Pro Headphones",
+        description: "Over-ear wireless headphones with 40mm drivers, active noise cancellation, and 30-hour battery life. Foldable design with premium cushioning for all-day comfort.",
+        description_de: "Over-Ear-Funkkopfhörer mit 40-mm-Treibern, aktiver Geräuschunterdrückung und 30 Stunden Akkulaufzeit. Faltbares Design mit Premium-Polsterung für ganztägigen Tragekomfort.",
+        price: 189,
+        category: "tech",
+        image: "assets/products/headphones1.jpg",
+        rating: 5
+    },
+    {
+        id: "2",
+        title: "AirBass Studio Headphones",
+        description: "Professional studio-grade headphones with flat frequency response, detachable cable, and 50mm neodymium drivers. Ideal for mixing and critical listening.",
+        description_de: "Professionelle Studio-Kopfhörer mit linearem Frequenzgang, abnehmbarem Kabel und 50-mm-Neodym-Treibern. Ideal zum Mischen und kritischen Hören.",
+        price: 229,
+        category: "tech",
+        image: "assets/products/headphones2.jpg",
+        rating: 4
+    },
+    {
+        id: "3",
+        title: "NovaSound Wireless",
+        description: "Lightweight on-ear Bluetooth headphones with 25-hour playback, built-in mic, and multipoint pairing. Perfect for commutes and work calls.",
+        description_de: "Leichte On-Ear-Bluetooth-Kopfhörer mit 25 Stunden Wiedergabe, integriertem Mikrofon und Multipoint-Pairing. Perfekt für den Pendlerweg und Geschäftsgespräche.",
+        price: 129,
+        category: "tech",
+        image: "assets/products/headphones3.jpg",
+        rating: 4
+    },
+    {
+        id: "4",
+        title: "PureAudio Elite",
+        description: "Audiophile-grade over-ear headphones with hand-tuned 45mm drivers, memory foam ear cups, and hi-res audio certification. For the true music lover.",
+        description_de: "Audiophile Over-Ear-Kopfhörer mit handabgestimmten 45-mm-Treibern, Memory-Foam-Ohrmuscheln und Hi-Res-Audio-Zertifizierung. Für wahre Musikliebhaber.",
+        price: 299,
+        category: "tech",
+        image: "assets/products/headphones4.jpg",
+        rating: 5
+    },
+    {
+        id: "5",
+        title: "BeatDrop Foldable",
+        description: "Compact foldable headphones with deep bass enhancement, 20-hour battery, and fast-charge USB-C. Great sound in a pocket-friendly package.",
+        description_de: "Kompakte faltbare Kopfhörer mit verbessertem Bassklang, 20 Stunden Akku und USB-C-Schnellladung. Toller Klang in einem taschenfreundlichen Format.",
+        price: 99,
+        category: "tech",
+        image: "assets/products/headphones5.jpg",
+        rating: 4
+    },
+    {
+        id: "6",
+        title: "ZenAir Sport Headphones",
+        description: "Sport-focused wireless headphones with sweat resistance, secure fit, and 5-minute quick charge for 2 hours of playback. Built for active lifestyles.",
+        description_de: "Sportorientierte Funkkopfhörer mit Schweißbeständigkeit, sicherem Sitz und 5-Minuten-Schnellladung für 2 Stunden Wiedergabe. Für aktive Lebensstile gebaut.",
+        price: 149,
+        category: "tech",
+        image: "assets/products/headphones6.jpg",
+        rating: 5
+    },
+    {
+        id: "7",
+        title: "NovaPower 65W GaN Charger",
+        description: "Ultra-compact 65W GaN wall charger with dual USB-C and one USB-A port. Simultaneously charge a laptop, phone, and tablet without the bulk.",
+        description_de: "Ultrakompaktes 65-W-GaN-Wandladegerät mit zwei USB-C- und einem USB-A-Anschluss. Lade gleichzeitig Laptop, Smartphone und Tablet – ohne den üblichen Klotz.",
+        price: 49,
+        category: "accessories",
+        image: "assets/products/charger1.jpg",
+        rating: 4
+    },
+    {
+        id: "8",
+        title: "SwiftCharge 30W PD Charger",
+        description: "Single-port 30W USB-C Power Delivery charger. Fills your smartphone to 50% in under 30 minutes. Universal compatibility with all PD devices.",
+        description_de: "Einanschluss-30-W-USB-C-Power-Delivery-Ladegerät. Lädt dein Smartphone in unter 30 Minuten auf 50 % auf. Universell kompatibel mit allen PD-Geräten.",
+        price: 29,
+        category: "accessories",
+        image: "assets/products/charger2.jpg",
+        rating: 4
+    },
+    {
+        id: "9",
+        title: "TurboPlug 100W Desktop Charger",
+        description: "4-port 100W desktop charging station with two USB-C (100W + 45W) and two USB-A ports. One charger for your entire workspace.",
+        description_de: "4-Port-100-W-Desktop-Ladestation mit zwei USB-C- (100 W + 45 W) und zwei USB-A-Anschlüssen. Ein Ladegerät für deinen gesamten Arbeitsplatz.",
+        price: 69,
+        category: "accessories",
+        image: "assets/products/charger3.jpg",
+        rating: 5
+    },
+    {
+        id: "10",
+        title: "NovaBank Slim 10000",
+        description: "10,000 mAh slim power bank with 22.5W fast charge output and USB-C PD input. Charges most phones twice. Fits in any pocket.",
+        description_de: "Schlanke 10.000-mAh-Powerbank mit 22,5-W-Schnellladungsausgang und USB-C-PD-Eingang. Lädt die meisten Smartphones zweimal auf. Passt in jede Tasche.",
+        price: 39,
+        category: "accessories",
+        image: "assets/products/powerbank1.jpg",
+        rating: 4
+    },
+    {
+        id: "11",
+        title: "PowerVault Pro 20000",
+        description: "20,000 mAh high-capacity power bank with 65W USB-C output — capable of charging a laptop on the go. LED battery indicator and dual output ports.",
+        description_de: "20.000-mAh-Hochkapazitäts-Powerbank mit 65-W-USB-C-Ausgang – kann unterwegs einen Laptop aufladen. LED-Batterieanzeige und zwei Ausgänge.",
+        price: 69,
+        category: "accessories",
+        image: "assets/products/powerbank2.jpg",
+        rating: 5
+    },
+    {
+        id: "12",
+        title: "MagCharge Wireless Bank 8000",
+        description: "8,000 mAh MagSafe-compatible wireless power bank. Snap onto your iPhone and charge at 15W wirelessly, or use USB-C for any device.",
+        description_de: "8.000-mAh-MagSafe-kompatible kabellose Powerbank. Einfach ans iPhone einrasten und mit 15 W kabellos laden oder USB-C für jedes andere Gerät nutzen.",
+        price: 59,
+        category: "accessories",
+        image: "assets/products/powerbank3.jpg",
+        rating: 4
+    }
+>>>>>>> af82f59e1d1ee97d863d74f215ccc1248d2e1e4c
 ];
 
 function renderShopProducts() {
@@ -119,6 +269,7 @@ function renderShopProducts() {
         if (sort === "price_desc") list.sort((a, b) => b.price - a.price);
 
         container.innerHTML = "";
+<<<<<<< HEAD
         list.forEach((p) => {
             const card = document.createElement("article");
             card.className = "product-card glass-card hover-lift";
@@ -127,6 +278,25 @@ function renderShopProducts() {
         <div class="product-body">
           <h3 class="product-title">${p.title}</h3>
           <p class="product-category">${p.category}</p>
+=======
+        if (list.length === 0) {
+            container.innerHTML = `<div class="empty-state"><p>No products found.</p><a href="shop.html" class="btn ghost">Clear search</a></div>`;
+            return;
+        }
+        list.forEach((p) => {
+            const stars = starRating(p.rating || 4);
+            const card = document.createElement("article");
+            card.className = "product-card glass-card hover-lift";
+            card.innerHTML = `
+        <div class="product-image">
+          <img src="${p.image}" alt="${p.title}" loading="lazy" />
+        </div>
+        <div class="product-body">
+          <h3 class="product-title">${p.title}</h3>
+          <p class="product-category">${p.category.toUpperCase()}</p>
+          <p class="product-stars">${stars}</p>
+          <p class="product-desc">${productDesc(p)}</p>
+>>>>>>> af82f59e1d1ee97d863d74f215ccc1248d2e1e4c
           <div class="product-meta">
             <span class="product-price">€${p.price}</span>
             <button class="btn small primary add-to-cart" data-id="${p.id}" data-title="${p.title}" data-price="${p.price}">
@@ -149,6 +319,10 @@ function renderShopProducts() {
                 const title = btn.getAttribute("data-title");
                 const price = Number(btn.getAttribute("data-price"));
                 addToCart({ id, title, price, qty: 1 });
+<<<<<<< HEAD
+=======
+                showToast(`✓ ${title} added to cart`);
+>>>>>>> af82f59e1d1ee97d863d74f215ccc1248d2e1e4c
             });
         });
     }
@@ -168,13 +342,29 @@ function initProductPage() {
     const product = PRODUCTS.find((p) => p.id === id) || PRODUCTS[0];
 
     const titleEl = document.getElementById("product-title");
+<<<<<<< HEAD
     const priceEl = document.querySelector(".product-price-large");
+=======
+    const priceEl = document.getElementById("product-price");
+    const categoryEl = document.getElementById("product-category");
+    const descEl = document.getElementById("product-description");
+    const imgEl = document.getElementById("product-main-img");
+>>>>>>> af82f59e1d1ee97d863d74f215ccc1248d2e1e4c
     const addBtn = document.getElementById("product-add-to-cart");
     const qtyInput = document.getElementById("product-qty");
     const relatedContainer = document.getElementById("related-products");
 
     if (titleEl) titleEl.textContent = product.title;
     if (priceEl) priceEl.textContent = `€${product.price}`;
+<<<<<<< HEAD
+=======
+    if (categoryEl) categoryEl.textContent = product.category.toUpperCase();
+    if (descEl) descEl.textContent = productDesc(product);
+
+    const starsEl = document.getElementById("product-stars");
+    if (starsEl) starsEl.textContent = starRating(product.rating || 4);
+    if (imgEl && product.image) { imgEl.src = product.image; imgEl.alt = product.title; }
+>>>>>>> af82f59e1d1ee97d863d74f215ccc1248d2e1e4c
     if (addBtn) addBtn.setAttribute("data-product-id", product.id);
 
     if (addBtn && qtyInput) {
@@ -201,10 +391,20 @@ function initProductPage() {
             const card = document.createElement("article");
             card.className = "product-card glass-card hover-lift";
             card.innerHTML = `
+<<<<<<< HEAD
         <div class="product-image skeleton"></div>
         <div class="product-body">
           <h3 class="product-title">${p.title}</h3>
           <p class="product-category">${p.category}</p>
+=======
+        <div class="product-image">
+          <img src="${p.image}" alt="${p.title}" loading="lazy" />
+        </div>
+        <div class="product-body">
+          <h3 class="product-title">${p.title}</h3>
+          <p class="product-category">${p.category}</p>
+          <p class="product-desc">${productDesc(p)}</p>
+>>>>>>> af82f59e1d1ee97d863d74f215ccc1248d2e1e4c
           <div class="product-meta">
             <span class="product-price">€${p.price}</span>
             <button class="btn small primary add-to-cart" data-id="${p.id}" data-title="${p.title}" data-price="${p.price}">
@@ -232,6 +432,40 @@ function initProductPage() {
     }
 }
 
+<<<<<<< HEAD
+=======
+function renderFeaturedProducts() {
+    const container = document.getElementById("featured-products");
+    if (!container) return;
+
+    const featured = [PRODUCTS[0], PRODUCTS[6], PRODUCTS[9]]; // headphones1, charger1, powerbank1
+    featured.forEach((p) => {
+        const card = document.createElement("article");
+        card.className = "product-card glass-card hover-lift";
+        card.innerHTML = `
+            <div class="product-image">
+                <img src="${p.image}" alt="${p.title}" loading="lazy" />
+            </div>
+            <div class="product-body">
+                <h3 class="product-title">${p.title}</h3>
+                <p class="product-category">${p.category.toUpperCase()}</p>
+                <p class="product-stars">${starRating(p.rating || 4)}</p>
+                <p class="product-desc">${productDesc(p)}</p>
+                <div class="product-meta">
+                    <span class="product-price">€${p.price}</span>
+                    <a href="product.html?id=${p.id}" class="btn small primary">View</a>
+                </div>
+            </div>
+        `;
+        card.addEventListener("click", (e) => {
+            if (e.target.closest(".btn")) return;
+            window.location.href = `product.html?id=${p.id}`;
+        });
+        container.appendChild(card);
+    });
+}
+
+>>>>>>> af82f59e1d1ee97d863d74f215ccc1248d2e1e4c
 document.addEventListener("DOMContentLoaded", () => {
     initTheme();
     initHeader();
@@ -239,6 +473,13 @@ document.addEventListener("DOMContentLoaded", () => {
     initYear();
     initRipple();
 
+<<<<<<< HEAD
+=======
+    if (document.getElementById("featured-products")) {
+        renderFeaturedProducts();
+    }
+
+>>>>>>> af82f59e1d1ee97d863d74f215ccc1248d2e1e4c
     if (document.getElementById("shop-products")) {
         renderShopProducts();
     }
