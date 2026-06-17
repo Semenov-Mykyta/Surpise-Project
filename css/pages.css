@@ -1,6 +1,5 @@
-/* Pages: cart sidebar, auth/support forms, product/shop pages and legal page */
 
-/* Cart sidebar */
+
 .cart-sidebar {
     position: fixed;
     top: 0;
@@ -26,7 +25,6 @@
 .cart-item-controls { display: flex; align-items: center; gap: 0.4rem; }
 .cart-total { display: flex; justify-content: space-between; margin-bottom: 0.8rem; }
 
-/* Forms / auth / support */
 .auth-section { padding-top: 3rem; }
 .auth-layout { max-width: 520px; margin: 0 auto; }
 .auth-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.2rem; }
@@ -52,7 +50,6 @@ label { font-size: 0.85rem; color: var(--text-muted); }
 .support-benefits { padding-left: 1.1rem; color: var(--text-muted); font-size: 0.9rem; }
 .support-form { display: flex; flex-direction: column; gap: 0.8rem; }
 
-/* Product page */
 .product-main-image { height: 360px; border: 1px solid var(--border); }
 .product-thumbs { display: flex; gap: 0.65rem; margin-top: 0.8rem; }
 .thumb { flex: 1; height: 66px; border-radius: var(--radius-md); background: var(--surface-2); border: 1px solid var(--border); }
@@ -112,7 +109,6 @@ label { font-size: 0.85rem; color: var(--text-muted); }
 .dashboard { margin-top: 1.5rem; }
 .dashboard-grid { margin-top: 1rem; }
 
-/* Shop controls */
 .shop-controls {
     display: grid;
     grid-template-columns: 1fr;
@@ -137,8 +133,6 @@ label { font-size: 0.85rem; color: var(--text-muted); }
     text-overflow: ellipsis;
 }
 
-
-/* Legal page */
 .legal-hero {
     padding: 4.5rem 0 1.5rem;
 }

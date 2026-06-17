@@ -5,6 +5,7 @@
         <title>NovaStore – Premium Tech & Fashion</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="description" content="Modern premium e-commerce store for tech and fashion." />
+        <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
         <link rel="stylesheet" href="css/base.css" />
         <link rel="stylesheet" href="css/navbar.css" />
         <link rel="stylesheet" href="css/sections.css" />
@@ -82,11 +83,14 @@
                     </div>
                 </div>
                 <div class="hero-visual glass-card">
-                    <div class="hero-gradient"></div>
+                    <img class="hero-bg-img" src="assets/products/headphones4.jpg" alt="PureAudio Elite Headphones" />
                     <div class="hero-product-card">
-                        <h3 data-i18n="hero.featured_title"></h3>
-                        <p data-i18n="hero.featured_desc"></p>
-                        <span class="price-tag">€249</span>
+                        <h3>PureAudio Elite</h3>
+                        <p>Audiophile-grade over-ear headphones. Hi-res certified.</p>
+                        <div class="hero-card-footer">
+                            <span class="price-tag">€299</span>
+                            <a href="product.html?id=4" class="btn small primary">View</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -96,42 +100,9 @@
             <div class="container">
                 <div class="section-header">
                     <h2 data-i18n="featured.title"></h2>
-                    <p data-i18n="featured.subtitle"></p>
+                    <a href="shop.html" class="btn ghost">Shop All →</a>
                 </div>
-                <div class="product-grid" id="featured-products">
-                    <article class="product-card glass-card hover-lift" data-product-id="1">
-                        <div class="product-image skeleton"></div>
-                        <div class="product-body">
-                            <h3 class="product-title">Aurora Wireless Headphones</h3>
-                            <p class="product-category" data-i18n="categories.tech"></p>
-                            <div class="product-meta">
-                                <span class="product-price">€199</span>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="product-card glass-card hover-lift" data-product-id="2">
-                        <div class="product-image skeleton"></div>
-                        <div class="product-body">
-                            <h3 class="product-title">Nebula Smartwatch</h3>
-                            <p class="product-category" data-i18n="categories.tech"></p>
-                            <div class="product-meta">
-                                <span class="product-price">€249</span>
-                            </div>
-                        </div>
-                    </article>
-
-                    <article class="product-card glass-card hover-lift" data-product-id="3">
-                        <div class="product-image skeleton"></div>
-                        <div class="product-body">
-                            <h3 class="product-title">Lumen Minimal Sneakers</h3>
-                            <p class="product-category" data-i18n="categories.fashion"></p>
-                            <div class="product-meta">
-                                <span class="product-price">€129</span>
-                            </div>
-                        </div>
-                    </article>
-                </div>
+                <div class="product-grid" id="featured-products"></div>
             </div>
         </section>
 
@@ -142,18 +113,27 @@
                     <p data-i18n="categories.subtitle"></p>
                 </div>
                 <div class="category-grid">
-                    <div class="category-card glass-card hover-lift">
+                    <a href="shop.html?category=tech" class="category-card glass-card hover-lift">
+                        <div class="category-img-wrap">
+                            <img src="assets/products/headphones1.jpg" alt="Headphones" />
+                        </div>
                         <h3 data-i18n="categories.tech"></h3>
                         <p data-i18n="categories.tech_desc"></p>
-                    </div>
-                    <div class="category-card glass-card hover-lift">
-                        <h3 data-i18n="categories.fashion"></h3>
-                        <p data-i18n="categories.fashion_desc"></p>
-                    </div>
-                    <div class="category-card glass-card hover-lift">
+                    </a>
+                    <a href="shop.html?category=accessories" class="category-card glass-card hover-lift">
+                        <div class="category-img-wrap">
+                            <img src="assets/products/charger1.jpg" alt="Charger" />
+                        </div>
                         <h3 data-i18n="categories.accessories"></h3>
                         <p data-i18n="categories.accessories_desc"></p>
-                    </div>
+                    </a>
+                    <a href="shop.html?category=accessories" class="category-card glass-card hover-lift">
+                        <div class="category-img-wrap">
+                            <img src="assets/products/powerbank1.jpg" alt="Power Bank" />
+                        </div>
+                        <h3>Power Banks</h3>
+                        <p>Charge anywhere. Stay powered on the go.</p>
+                    </a>
                 </div>
             </div>
         </section>

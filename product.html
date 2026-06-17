@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <title>Product – NovaStore</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="assets/logo.svg" />
     <link rel="stylesheet" href="css/base.css" />
     <link rel="stylesheet" href="css/navbar.css" />
     <link rel="stylesheet" href="css/sections.css" />
@@ -57,20 +58,16 @@
     <section class="section">
         <div class="container product-layout">
             <div class="product-gallery glass-card">
-                <div class="product-main-image skeleton"></div>
-                <div class="product-thumbs">
-                    <div class="thumb skeleton"></div>
-                    <div class="thumb skeleton"></div>
-                    <div class="thumb skeleton"></div>
+                <div class="product-main-image">
+                    <img id="product-main-img" src="" alt="" />
                 </div>
             </div>
             <div class="product-info glass-card">
-                <h1 id="product-title">Aurora Wireless Headphones</h1>
-                <p class="product-category" data-i18n="categories.tech"></p>
-                <p class="product-price-large">€199</p>
-                <p class="product-description">
-                    Premium wireless headphones with active noise cancelling, 30h battery life, and ultra-soft ear cushions.
-                </p>
+                <h1 id="product-title"></h1>
+                <p class="product-category" id="product-category"></p>
+                <p class="product-stars" id="product-stars"></p>
+                <p class="product-price-large" id="product-price"></p>
+                <p class="product-description" id="product-description"></p>
                 <div class="product-actions">
                     <div class="qty-control">
                         <button class="btn-icon qty-minus">−</button>

@@ -106,8 +106,6 @@ function initRipple() {
     });
 }
 
-/* Simple product data (could be replaced by Supabase later) */
-
 const PRODUCTS = [
     {
         id: "1",
@@ -396,7 +394,7 @@ function renderFeaturedProducts() {
     const container = document.getElementById("featured-products");
     if (!container) return;
 
-    const featured = [PRODUCTS[0], PRODUCTS[6], PRODUCTS[9]]; // headphones1, charger1, powerbank1
+    const featured = [PRODUCTS[0], PRODUCTS[6], PRODUCTS[9]]; 
     featured.forEach((p) => {
         const card = document.createElement("article");
         card.className = "product-card glass-card hover-lift";
