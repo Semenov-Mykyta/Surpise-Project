@@ -150,3 +150,43 @@
     border-radius: 999px;
     background: var(--text);
 }
+
+/* ── Logged-in user badge (shown alongside the Login button) ──────────── */
+.nav-user-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.38rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--border));
+    background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text);
+    max-width: 200px;
+    cursor: default;
+    transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.nav-user-badge:hover {
+    border-color: color-mix(in srgb, var(--accent) 65%, var(--border));
+    background: color-mix(in srgb, var(--accent) 14%, var(--surface));
+}
+
+/* Green presence dot */
+.nav-user-dot {
+    flex-shrink: 0;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 0 2px color-mix(in srgb, #22c55e 25%, transparent);
+}
+
+/* Truncate long email addresses gracefully */
+.nav-user-email-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 160px;
+}

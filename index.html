@@ -11,9 +11,11 @@
         <link rel="stylesheet" href="css/sections.css" />
         <link rel="stylesheet" href="css/pages.css" />
         <link rel="stylesheet" href="css/responsive.css" />
+        <script defer src="https://unpkg.com/@supabase/supabase-js@2"></script>
         <script defer src="js/translations.js"></script>
         <script defer src="js/cart.js"></script>
         <script defer src="js/main.js"></script>
+        <script defer src="js/navbar-auth.js"></script>
     </head>
     <body>
     <div class="page-loader" id="page-loader">
@@ -41,6 +43,10 @@
                     <span class="theme-icon">🌙</span>
                 </button>
                 <a href="login.html" class="btn ghost" data-i18n="nav.login"></a>
+                <div class="nav-user-badge" id="nav-user-badge" hidden>
+                    <span class="nav-user-dot"></span>
+                    <span class="nav-user-email-text" id="nav-user-email-text"></span>
+                </div>
                 <button class="btn-icon cart-btn" id="cart-toggle" aria-label="Cart">
                     <span class="cart-icon">🛒</span>
                     <span class="cart-count" id="cart-count">0</span>

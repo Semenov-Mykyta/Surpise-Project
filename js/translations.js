@@ -4,6 +4,7 @@ const translations = {
         "nav.shop": "Shop",
         "nav.support": "Support",
         "nav.login": "Login",
+        "nav.logged_in_as": "Logged in as",
 
         "hero.title": "Premium tech & fashion, curated for you.",
         "hero.subtitle": "Discover a carefully selected collection of devices and apparel that feel like the future.",
@@ -146,6 +147,7 @@ const translations = {
         "nav.shop": "Shop",
         "nav.support": "Support",
         "nav.login": "Login",
+        "nav.logged_in_as": "Angemeldet als",
 
         "hero.title": "Premium Tech & Fashion, kuratiert für dich.",
         "hero.subtitle": "Entdecke eine sorgfältig ausgewählte Kollektion von Geräten und Kleidung, die sich nach Zukunft anfühlt.",
