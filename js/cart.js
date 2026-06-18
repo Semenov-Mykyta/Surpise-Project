@@ -1,11 +1,13 @@
 const CART_KEY = "novastore_cart";
 
-async function getUserId(){
+/* Returns the current Supabase user ID, or undefined if not logged in */
+async function getUserId() {
     const { data } = await window.supabaseClient.auth.getUser();
     return data?.user?.id;
 }
 
-async function loadCartFromServer(userId){
+/* Fetches the cart items stored in the Supabase database for the given user */
+async function loadCartFromServer(userId) {
     const { data } = await window.supabaseClient
         .from('carts')
         .select('items')
@@ -14,20 +16,23 @@ async function loadCartFromServer(userId){
     return data?.items || [];
 }
 
-async function saveCartToServer(userId, cart){
+/* Saves the given cart array to the Supabase database for the given user */
+async function saveCartToServer(userId, cart) {
     await window.supabaseClient
         .from('carts')
         .upsert({ user_id: userId, items: cart, updated_at: new Date() });
 }
 
-async function syncCart(){
+/* Reads the current local cart and syncs it to the server if the user is logged in */
+async function syncCart() {
     const userId = await getUserId();
-    if(!userId) return;
+    /* Do nothing if no user is authenticated */
+    if (!userId) return;
     const cart = getCart();
     await saveCartToServer(userId, cart);
 }
 
-
+/* Reads the cart from localStorage and returns it as an array */
 function getCart() {
     try {
         return JSON.parse(localStorage.getItem(CART_KEY)) || [];
@@ -36,6 +41,7 @@ function getCart() {
     }
 }
 
+/* Saves the cart to localStorage, syncs it to the server and refreshes the UI */
 function saveCart(cart) {
     localStorage.setItem(CART_KEY, JSON.stringify(cart));
     syncCart();
@@ -43,22 +49,27 @@ function saveCart(cart) {
     renderCartSidebar();
 }
 
+/* Adds a product to the cart, or increases its quantity if it already exists */
 function addToCart(product) {
     const cart = getCart();
     const existing = cart.find((item) => item.id === product.id);
     if (existing) {
+        /* Product already in cart — just increase the quantity */
         existing.qty += product.qty || 1;
     } else {
+        /* New product — push it to the end of the cart */
         cart.push({ ...product, qty: product.qty || 1 });
     }
     saveCart(cart);
 }
 
+/* Removes a product from the cart by its ID */
 function removeFromCart(id) {
     const cart = getCart().filter((item) => item.id !== id);
     saveCart(cart);
 }
 
+/* Sets the quantity of a specific cart item (minimum 1) */
 function updateQty(id, qty) {
     const cart = getCart();
     const item = cart.find((i) => i.id === id);
@@ -67,10 +78,12 @@ function updateQty(id, qty) {
     saveCart(cart);
 }
 
+/* Calculates and returns the total price of all items in the cart */
 function getCartTotal() {
     return getCart().reduce((sum, item) => sum + item.price * item.qty, 0);
 }
 
+/* Updates the item count badge on the cart icon in the navbar */
 function updateCartCount() {
     const countEl = document.getElementById("cart-count");
     if (!countEl) return;
@@ -78,6 +91,7 @@ function updateCartCount() {
     countEl.textContent = totalItems;
 }
 
+/* Renders the full cart sidebar: all items, quantity controls, and total price */
 function renderCartSidebar() {
     const container = document.getElementById("cart-items");
     const totalEl = document.getElementById("cart-total-amount");
@@ -86,6 +100,7 @@ function renderCartSidebar() {
     const cart = getCart();
     container.innerHTML = "";
 
+    /* Show an empty state message if there are no items in the cart */
     if (cart.length === 0) {
         container.innerHTML = `
             <div class="empty-state">
@@ -93,6 +108,7 @@ function renderCartSidebar() {
                 <a href="shop.html" class="btn ghost">Browse products</a>
             </div>`;
     } else {
+        /* Create a row for each cart item with its title, price and controls */
         cart.forEach((item) => {
             const row = document.createElement("div");
             row.className = "cart-item";
@@ -112,8 +128,10 @@ function renderCartSidebar() {
         });
     }
 
+    /* Display the combined total price of all cart items */
     totalEl.textContent = `€${getCartTotal().toFixed(2)}`;
 
+    /* Minus buttons: decrease item quantity by 1, minimum 1 */
     container.querySelectorAll(".cart-minus").forEach((btn) => {
         btn.addEventListener("click", () => {
             const id = btn.getAttribute("data-id");
@@ -125,6 +143,7 @@ function renderCartSidebar() {
         });
     });
 
+    /* Plus buttons: increase item quantity by 1 */
     container.querySelectorAll(".cart-plus").forEach((btn) => {
         btn.addEventListener("click", () => {
             const id = btn.getAttribute("data-id");
@@ -136,6 +155,7 @@ function renderCartSidebar() {
         });
     });
 
+    /* Remove buttons: delete the item from the cart entirely */
     container.querySelectorAll(".cart-remove").forEach((btn) => {
         btn.addEventListener("click", () => {
             const id = btn.getAttribute("data-id");
@@ -144,16 +164,20 @@ function renderCartSidebar() {
     });
 }
 
+/* Sets up the checkout button to clear the cart and show a success message */
 function initCheckout() {
     const btn = document.querySelector(".cart-footer .btn.primary");
     if (!btn) return;
     btn.addEventListener("click", () => {
         const cart = getCart();
+        /* Do nothing if the cart is empty */
         if (cart.length === 0) return;
         const container = document.getElementById("cart-items");
         const totalEl = document.getElementById("cart-total-amount");
+        /* Clear cart from localStorage after placing the order */
         localStorage.removeItem(CART_KEY);
         updateCartCount();
+        /* Replace cart items with an order confirmation message */
         if (container) container.innerHTML = `
             <div class="checkout-success">
                 <h3>Order placed! 🎉</h3>
@@ -163,6 +187,7 @@ function initCheckout() {
     });
 }
 
+/* Initialize cart UI as soon as the DOM is ready */
 document.addEventListener("DOMContentLoaded", () => {
     updateCartCount();
     renderCartSidebar();

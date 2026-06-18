@@ -1,8 +1,10 @@
+/* EmailJS configuration used to send support messages */
 const EMAILJS_PUBLIC_KEY = "zWpLd3YXblspaCcRc";
 const EMAILJS_SERVICE_ID = "service_knm5jpr";
 const EMAILJS_TEMPLATE_ID = "template_t7dqfdg";
 
 document.addEventListener("DOMContentLoaded", () => {
+    /* Initialize EmailJS with the public key if the library has loaded */
     if (typeof emailjs !== "undefined") {
         emailjs.init(EMAILJS_PUBLIC_KEY);
     }
@@ -11,21 +13,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const statusEl = document.getElementById("support-status");
     const submitBtn = document.getElementById("support-submit");
 
+    /* Exit early if the support form is not present on this page */
     if (!form) return;
 
+    /* Handle support form submission */
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
+        /* Clear any previous status message */
         statusEl.textContent = "";
         statusEl.className = "form-status";
+        /* Disable the button while the request is in flight */
         submitBtn.disabled = true;
         submitBtn.textContent = "Sending...";
 
+        /* Read all form field values */
         const name = document.getElementById("support-name").value.trim();
         const email = document.getElementById("support-email").value.trim();
         const subject = document.getElementById("support-subject").value.trim();
         const order = document.getElementById("support-order").value.trim();
         const message = document.getElementById("support-message").value.trim();
 
+        /* Validate that all required fields are filled in */
         if (!name || !email || !subject || !message) {
             statusEl.textContent = "Please fill in all required fields.";
             statusEl.classList.add("error");
@@ -34,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
+        /* Build the parameters object for the EmailJS template */
         const templateParams = {
             name,
             email,
@@ -43,14 +52,18 @@ document.addEventListener("DOMContentLoaded", () => {
         };
 
         try {
+            /* Send the email via EmailJS using the configured service and template */
             await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams);
             statusEl.textContent = "Message sent successfully.";
             statusEl.classList.add("success");
+            /* Clear the form fields after a successful send */
             form.reset();
         } catch (err) {
+            /* Show an error message if the send failed */
             statusEl.textContent = "Something went wrong. Please try again.";
             statusEl.classList.add("error");
         } finally {
+            /* Always re-enable the button regardless of outcome */
             submitBtn.disabled = false;
             submitBtn.textContent = "Send message";
         }

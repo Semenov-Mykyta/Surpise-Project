@@ -284,37 +284,52 @@ const translations = {
     }
 };
 
+/* Currently active language, persisted in localStorage across page loads */
 let currentLang = localStorage.getItem("lang") || "en";
 
+/**
+ * Applies translations to every element on the page that has a data-i18n attribute
+ */
 function applyTranslations() {
+    /* Get the dictionary for the current language, fall back to English if missing */
     const dict = translations[currentLang] || translations.en;
 
+    /* Set the text content of every element with a data-i18n attribute */
     document.querySelectorAll("[data-i18n]").forEach((el) => {
         const key = el.getAttribute("data-i18n");
         if (dict[key]) el.textContent = dict[key];
     });
 
+    /* Set the placeholder of every input with a data-i18n-placeholder attribute */
     document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
         const key = el.getAttribute("data-i18n-placeholder");
         if (dict[key]) el.setAttribute("placeholder", dict[key]);
     });
 
+    /* Update the language toggle button label in the navbar */
     const langLabel = document.getElementById("lang-label");
     if (langLabel) langLabel.textContent = currentLang.toUpperCase();
 }
 
+/**
+ * Changes the site language, saves the choice and refreshes all translated content
+ */
 function setLanguage(lang) {
     currentLang = lang;
+    /* Save the selected language to localStorage for future visits */
     localStorage.setItem("lang", lang);
     applyTranslations();
+    /* Re-render product listings if the relevant sections exist on the current page */
     if (typeof renderShopProducts === "function" && document.getElementById("shop-products")) renderShopProducts();
     if (typeof renderFeaturedProducts === "function" && document.getElementById("featured-products")) renderFeaturedProducts();
     if (typeof initProductPage === "function" && document.querySelector(".product-layout")) initProductPage();
 }
 
+/* Apply translations immediately on page load and bind the language toggle button */
 document.addEventListener("DOMContentLoaded", () => {
     applyTranslations();
 
+    /* Language toggle button switches between EN and DE */
     const langToggle = document.getElementById("lang-toggle");
     if (langToggle) {
         langToggle.addEventListener("click", () => {
